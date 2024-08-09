@@ -1,0 +1,124 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <style>
+      .scratch-card {
+        position: relative;
+        width: 500px;
+        height: 300px;
+      }
+
+      #scratch-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      #scratch-canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: aquamarine;
+      }
+    </style>
+    <script>
+      const canvas = document.getElementById("scratch-canvas");
+      const ctx = canvas.getContext("2d");
+
+      let isDrawing = false;
+      let lastX = 0;
+      let lastY = 0;
+
+      canvas.addEventListener("mousedown", (e) => {
+        isDrawing = true;
+        [lastX, lastY] = [e.clientX, e.clientY];
+      });
+
+      canvas.addEventListener("mouseup", () => (isDrawing = false));
+      canvas.addEventListener("mouseout", () => (isDrawing = false));
+
+      canvas.addEventListener("mousemove", (e) => {
+        if (!isDrawing) return;
+        ctx.globalCompositeOperation = "destination-out";
+        ctx.lineWidth = 50;
+        ctx.lineJoin = "round";
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        ctx.moveTo(lastX, lastY);
+        ctx.lineTo(e.clientX, e.clientY);
+        ctx.stroke();
+        [lastX, lastY] = [e.clientX, e.clientY];
+      });
+    </script>
+  </head>
+  <body>
+    <div class="scratch-card">
+      <img src="./src/assets/imgs/1.jpeg" id="scratch-background" />
+      <canvas id="scratch-canvas"></canvas>
+    </div>
+  </body>
+</html> -->
+
+<html>
+  <head>
+    <style>
+      .canvas-container {
+        position: relative;
+      }
+
+      .mask-canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="canvas-container">
+      <canvas id="canvas1" width="400" height="400"></canvas>
+      <canvas id="canvas2" class="mask-canvas"  width="400" height="400"></canvas>
+    </div>
+
+    <script>
+      const canvas1 = document.getElementById('canvas1');
+      const canvas2 = document.getElementById('canvas2');
+      const ctx1 = canvas1.getContext('2d');
+      const ctx2 = canvas2.getContext('2d');
+
+      // Draw the image on canvas1
+      const image = new Image();
+      image.src = './src/assets/imgs/1.jpeg';
+      image.onload = () => {
+        ctx1.drawImage(image, 0, 0);
+      };
+
+      // Fill canvas2 with solid color
+      ctx2.fillStyle = 'yellow';
+      ctx2.fillRect(0, 0, canvas2.width, canvas2.height);
+
+      // Implement the mouse interaction
+      let isDrawing = false;
+      canvas2.addEventListener('mousedown', () => {
+        isDrawing = true;
+      });
+      canvas2.addEventListener('mouseup', () => {
+        isDrawing = false;
+      });
+      canvas2.addEventListener('mousemove', (event) => {
+        if (!isDrawing) return;
+        const x = event.clientX - canvas2.offsetLeft;
+        const y = event.clientY - canvas2.offsetTop;
+        ctx2.clearRect(x - 25, y - 25, 50, 50);
+      });
+    </script>
+  </body>
+</html>
